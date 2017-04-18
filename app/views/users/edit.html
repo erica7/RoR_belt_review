@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h2>Edit Your Profile</h2>
+    <form action="/users/<%= @this_user.id %>" method="post">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <input type="hidden" name="_method" value="put">
+      <label>First Name <input type="text" id="Name" name="edit[first_name]" value="<%= @this_user.first_name %>"></label><br/>
+      <label>Last Name <input type="text" id="Name" name="edit[last_name]" value="<%= @this_user.last_name %>"></label><br/>
+      <label>Email <input type="text" id="Email" name="edit[email]" value="<%= @this_user.email %>"></label><br/>
+      <label>City <input type="text" id="Email" name="edit[city]" value="<%= @this_user.city %>"></label><br/>
+      <label>State
+        <select name="edit[state]">
+          <% @states.each do |state| %>
+            <% if state === @this_user.state %>
+              <option selected="selected" value="<%= state.id %>"><%= state.state_abbr %></option>
+            <% else %>
+              <option value="<%= state.id %>"><%= state.state_abbr %></option>
+            <% end %>
+          <% end %>
+        </select>
+      </label><br/>
+      <input type="submit" name="Update Records" value="Update Records">
+    </form>
+
+
+  </body>
+</html>

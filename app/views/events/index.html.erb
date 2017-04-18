@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h1>Welcome, <%= current_user.first_name %>!</h1>
+
+    <h2>Here are some events in your state:</h2>
+    <table>
+      <thead>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Location</th>
+        <th>Host</th>
+        <th>Action/Status</th>
+      </thead>
+      <tbody>
+      <% @events_in_state.each do |event| %>
+          <tr>
+            <td><a href="/events/<%= event.id %>"><%= event.name %></a></td>
+            <td><%= event.date %></td>
+            <td><%= event.city %></td>
+            <td><%= event.user.first_name %></td>
+            <td>*** Actions / Status ***</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <h2>Here are some events in other states:</h2>
+    <table>
+      <thead>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Location</th>
+        <th>State</th>
+        <th>Host</th>
+        <th>Action</th>
+      </thead>
+      <tbody>
+        <% @events_out_state.each do |event| %>
+          <tr>
+            <td><a href="/events/<%= event.id %>"><%= event.name %></a></td>
+            <td><%= event.date %></td>
+            <td><%= event.city %></td>
+            <td><%= event.state.state_abbr %></td>
+            <td><%= event.user.first_name %></td>
+            <td>*** Actions ***</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <h2>Add Event</h2>
+    <form action="/events" method="post">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <label>Name <input type="text" id="Name" name="event[name]"></label><br/>
+      <label>Date <input type="date" id="Date" name="event[date]"></label><br/>
+      <label>City <input type="text" id="City" name="event[city]"></label><br/>
+      <label>State
+        <select name="event[state]">
+          <% @states.each do |state| %>
+            <option value="<%= state.id %>"><%= state.state_abbr %></option>
+          <% end %>
+        </select>
+      </label><br/>
+      <input type="submit" name="Add Event" value="Add Event">
+    </form>
+
+  </body>
+</html>

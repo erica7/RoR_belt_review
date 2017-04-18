@@ -1,0 +1,67 @@
+
+0. Plan models AND queries (to ensure models are designed appropriately)
+1. Make models; add validations; test models in rails console
+2. Make controllers (only as many as needed)
+3. Routes
+4. Controller methods & create html pages
+5. before_action
+
+registration: User Controller, create method
+login: Sessions Controller, create method
+logout: Sessions Controller, destroy method
+
+MODELS (5)
+
+rails g model User first_name last_name email city state:references password:digest
+User
+  first_name
+  last_name
+  email
+  city
+  belongs_to :state  # state:references
+  password
+
+  has_many :events   # hosting
+  has_many :guests   # many entries on the Guest join table
+  has_many :events_attending, through: :guests, source: :user
+  has_many :comments
+
+  password
+  password_confirmation
+
+
+rails g model State state_abbr
+State
+  state_abbr
+
+  has_many :events
+
+rails g model Event name date city state:references user:references
+# rails g model Event name date:datetime city state:references user:references  # why not type datetime??
+Event
+  name
+  date
+  city
+  belongs_to :state  # state:references
+  belongs_to :user   # user:references (host)
+
+  has_many :users, through: :guests # (guests)
+
+rails g model Guest event:references user:references
+Guests -- JOINING TABLE
+  belongs_to :event
+  belongs_to :user   # guests
+
+rails g model Comment comment event:references user:references
+Comment
+  comment
+  belongs_to :event  # event:references
+  belongs_to :user   # user:references (author)
+
+
+CONTROLLERS (4)
+
+rails g controller Users
+rails g controller Events
+rails g controller Guests
+rails g controller Comment
